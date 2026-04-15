@@ -309,81 +309,50 @@
     <div class="cat-pill" onclick="filterCat3D('drinks',this)">Drinks</div>
   </div>
 
-<div class="viewer-wrap">
+  <div class="viewer-wrap">
+    <model-viewer id="dishViewer3D" alt="Dish 3D model"
+      ar ar-modes="webxr scene-viewer quick-look"
+      ar-scale="fixed" ar-placement="floor"
+      shadow-intensity="1.4" shadow-softness="0.8"
+      exposure="1.1" environment-image="neutral"
+      camera-controls interaction-prompt="none"
+      style="width:100%;height:100%;background:transparent;--poster-color:transparent;">
+      <!-- Hidden native AR button — triggered programmatically -->
+      <button slot="ar-button" id="arBtn3D"></button>
+    </model-viewer>
 
-  <model-viewer 
-  id="dishViewer3D"
-  src=""
-  alt="Dish 3D model"
-  loading="eager"
-  reveal="interaction"
-  preload
-  poster="images/loading.webp"
-  ar
-  ar-button="none"
-  ar-modes="webxr scene-viewer quick-look"
-  ar-scale="fixed"
-  ar-placement="floor"
-  shadow-intensity="1"
-  exposure="1"
-  environment-image="neutral"
-  camera-controls
-  camera-orbit="0deg 75deg 2.5m"
-  field-of-view="30deg"
-  interaction-prompt="none"
-  style="width:100%;height:100%;">
-</model-viewer>
+    <!-- TAP TO PLACE AR BUTTON -->
+    <button class="ar-place-btn" id="arPlaceBtn" onclick="launchAR()">
+      <div class="ar-tap-icon">
+        <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11 2L11 6M11 16L11 20M2 11L6 11M16 11L20 11" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="11" cy="11" r="3.5" stroke="white" stroke-width="1.8"/>
+        </svg>
+        <div class="ar-tap-ring"></div>
+      </div>
+      <div class="ar-btn-text">
+        <div class="ar-btn-main">Tap to Place on Table</div>
+        <div class="ar-btn-sub">View dish in your space</div>
+      </div>
+    </button>
 
-  <!-- TOP LEFT -->
-  <div class="viewer-overlay-tl">
-    <div class="viewer-dot"></div>
-    <div class="viewer-live">3D Preview</div>
-  </div>
-
-  <!-- HINT -->
-  <div class="viewer-hint" id="viewerHint">
-    Drag to rotate · Pinch to zoom
-  </div>
-
-  <!-- ✅ LOADER -->
-  <div id="modelLoader3d">
-    <div class="loader-ring3d"></div>
-    <div class="loader-text3d">Loading 3D…</div>
-  </div>
-
-  <!-- ✅ NO MODEL -->
-  <div id="noModel3d" class="no-model-badge" style="display:none;">
-    3D preview coming soon
-  </div>
-
-  <!-- AR BUTTON -->
-  <button class="ar-place-btn" id="arPlaceBtn" onclick="launchAR()">
-    <div class="ar-tap-icon">
-      <svg viewBox="0 0 22 22" fill="none">
-        <path d="M11 2L11 6M11 16L11 20M2 11L6 11M16 11L20 11"
-          stroke="white" stroke-width="1.8" stroke-linecap="round"/>
-        <circle cx="11" cy="11" r="3.5"
-          stroke="white" stroke-width="1.8"/>
-      </svg>
-      <div class="ar-tap-ring"></div>
+    <!-- AR LAUNCHING OVERLAY -->
+    <div id="arLaunchOverlay">
+      <div class="ar-launch-ring"></div>
+      <div class="ar-launch-text">Opening AR…</div>
+      <div class="ar-launch-sub">Point your camera at your table<br>and tap to place the dish</div>
     </div>
-  </button>
 
-  <!-- AR LOADING -->
-  <div id="arLaunchOverlay">
-    <div class="ar-launch-ring"></div>
-    <div class="ar-launch-text">Opening AR…</div>
-    <div class="ar-launch-sub">
-      Point your camera at your table<br>and tap to place the dish
+    <!-- AR NOT SUPPORTED MESSAGE -->
+    <div id="arUnsupportedMsg">
+      AR is not supported on this device.<br>Try on an iOS or Android phone.
     </div>
-  </div>
 
-  <!-- AR NOT SUPPORTED -->
-  <div id="arUnsupportedMsg">
-    AR is not supported on this device.<br>Try on an iOS or Android phone.
+    <div id="modelLoader3d"><div class="loader-ring3d"></div><div class="loader-text3d">Loading…</div></div>
+    <div id="noModel3d" class="no-model-badge" style="display:none;">3D preview coming soon</div>
+    <div class="viewer-overlay-tl"><div class="viewer-dot"></div><div class="viewer-live">3D Preview</div></div>
+    <div class="viewer-hint" id="viewerHint">Drag to rotate · Pinch to zoom</div>
   </div>
-
-</div>
 
   <div class="dish-detail">
     <div class="dish-detail-emoji" id="ddEmoji">🍱</div>
@@ -550,7 +519,7 @@ const FALLBACK = [
   { id:'g1',  name:'Gyoza',           category:'starter', jp:'餃子',       description:'Pan-fried pork & cabbage dumplings with ponzu dipping sauce.',              price:320, emoji:'🥟', veg:false, chef_pick:true,  new:false, available:true,  glb_url:'3d-model/Gyoza/Gyoza.glb'},
   { id:'g2',  name:'Edamame',         category:'starter', jp:'枝豆',       description:'Steamed young soybeans with Himalayan sea salt.',                           price:250, emoji:'🫘', veg:true,  chef_pick:false, new:false, available:true,  glb_url:'3d-model/Edamame/Edamame.glb'},
   { id:'g3',  name:'Karaage',         category:'starter', jp:'唐揚げ',     description:'Japanese crispy fried chicken with yuzu mayo and lemon wedge.',            price:480, emoji:'🍗', veg:false, chef_pick:true,  new:false, available:true,  glb_url:'3d-model/Karaage/Karaage.glb'},
-  { id:'g4',  name:'Miso Soup',       category:'starter', jp:'味噌汁',     description:'Traditional dashi & tofu miso soup with wakame and green onion.',         price:180, emoji:'🍵', veg:true,  chef_pick:false, new:false, available:true,  glb_url:'3d-model/Miso-Soup/Miso-Soup.glb'},
+  { id:'g4',  name:'Miso Soup',       category:'starter', jp:'味噌汁',     description:'Traditional dashi & tofu miso soup with wakame and green onion.',         price:180, emoji:'🍵', veg:true,  chef_pick:false, new:false, available:true,  glb_url:'3d-model/Miso Soup/Miso Soup.glb'},
   { id:'g5',  name:'Takoyaki',        category:'starter', jp:'たこ焼き',   description:'Octopus balls with bonito flakes and takoyaki sauce. 6 pcs.',              price:390, emoji:'🐙', veg:false, chef_pick:false, new:true,  available:true,  glb_url:'3d-model/Takoyaki/Takoyaki.glb'},
   { id:'g6',  name:'Agedashi Tofu',   category:'starter', jp:'揚げ出し豆腐',description:'Silken tofu in savory dashi broth with grated daikon and ginger.',       price:350, emoji:'🍲', veg:true,  chef_pick:true,  new:false, available:true,  glb_url:'3d-model/Agedashi-Tofu/Agedashi-Tofu.glb'},
   { id:'g7',  name:'Ramen',           category:'ramen',   jp:'ラーメン',   description:'Rich tonkotsu broth with noodles, chashu pork, soft egg and nori.',       price:850, emoji:'🍜', veg:false, chef_pick:true,  new:false, available:true,  glb_url:'3d-model/Ramen/Ramen.glb'},
@@ -591,18 +560,21 @@ function launchAR() {
   const overlay = document.getElementById('arLaunchOverlay');
   const unsup   = document.getElementById('arUnsupportedMsg');
 
-  if (!viewer || !viewer.canActivateAR) {
+  /* Check if model-viewer supports AR on this device */
+  if (!viewer.canActivateAR) {
+    /* Show friendly unsupported message for 3s */
     unsup.classList.add('show');
     setTimeout(() => unsup.classList.remove('show'), 3000);
     return;
   }
 
+  /* Show launching overlay briefly, then trigger native AR */
   overlay.classList.add('show');
-
   setTimeout(() => {
     overlay.classList.remove('show');
+    /* Activate AR via model-viewer's built-in method */
     viewer.activateAR();
-  }, 800);
+  }, 1200);
 }
 
 /* Listen for model-viewer AR events to close overlay if needed */
@@ -712,65 +684,48 @@ function buildDishChips3D(cat) {
 }
 
 function selectDish3D(dish, chipEl) {
-  const viewer = document.getElementById('dishViewer3D');
-  const loader = document.getElementById('modelLoader3d');
-  const noMod  = document.getElementById('noModel3d');
-  const hint   = document.getElementById('viewerHint');
-  const arBtn  = document.getElementById('arPlaceBtn');
-
+  if (!dish) return;
   currentDish3D = dish;
-
-  // Update UI
-  document.getElementById('ddEmoji').textContent = dish.emoji;
-  document.getElementById('ddName').textContent  = dish.name;
-  document.getElementById('ddDesc').textContent  = dish.description;
-  document.getElementById('ddPrice').textContent = '₹ ' + dish.price;
-
   document.querySelectorAll('.dish-chip3d').forEach(c => c.classList.remove('active'));
   if (chipEl) chipEl.classList.add('active');
 
+  document.getElementById('ddEmoji').textContent = dish.emoji;
+  document.getElementById('ddName').textContent  = dish.name;
+  document.getElementById('ddDesc').textContent  = dish.description;
+  document.getElementById('ddPrice').textContent = dish.price ? '₹ ' + dish.price : '—';
+
+  const viewer    = document.getElementById('dishViewer3D');
+  const loader    = document.getElementById('modelLoader3d');
+  const noMod     = document.getElementById('noModel3d');
+  const arPlaceBtn = document.getElementById('arPlaceBtn');
+  const hint      = document.getElementById('viewerHint');
+
   if (dish.glb_url) {
-   if (noMod) noMod.style.display = 'none';
-if (loader) loader.style.display = 'flex';
-    hint.textContent = 'Loading model…';
-    arBtn.classList.remove('visible');
-// 🛑 STOP previous model (VERY IMPORTANT)
-// Stop previous model safely
-if (viewer.pause) viewer.pause();
-
-// Reset
-viewer.removeAttribute("src");
-viewer.removeAttribute("ios-src");
-
-// Load new model
-viewer.src = dish.glb_url;
-viewer.setAttribute("ios-src", dish.glb_url.replace(".glb", ".usdz"));
-
-    // Remove previous onload (clean reset)
-viewer.onload = null;
-
-// Load event (single clean handler)
-viewer.onload = () => {
-  if (loader) loader.style.display = 'none';
-  if (hint) hint.textContent = 'Drag to rotate · Pinch to zoom';
-  if (arBtn) arBtn.classList.add('visible');
-};
-   
-
+    noMod.style.display  = 'none';
+    loader.style.display = 'flex';
+    hint.textContent     = 'Loading model…';
+    viewer.setAttribute('src', dish.glb_url);
+    viewer.setAttribute('ios-src', dish.glb_url.replace('.glb', '.usdz'));
+    viewer.addEventListener('load', () => {
+      loader.style.display = 'none';
+      hint.textContent     = 'Drag to rotate · Pinch to zoom';
+      arPlaceBtn.classList.add('visible');
+    }, { once: true });
+    /* Fallback timeout */
+    setTimeout(() => {
+      loader.style.display = 'none';
+      hint.textContent     = 'Drag to rotate · Pinch to zoom';
+      arPlaceBtn.classList.add('visible');
+    }, 12000);
   } else {
-  viewer.removeAttribute('src');
-  viewer.removeAttribute('ios-src');
-
-  if (loader) loader.style.display = 'none';
-  if (noMod) noMod.style.display = 'block';
-
-  hint.textContent = 'No 3D preview available';
-  arBtn.classList.remove('visible');
+    viewer.removeAttribute('src');
+    viewer.removeAttribute('ios-src');
+    arPlaceBtn.classList.remove('visible');
+    loader.style.display = 'none';
+    noMod.style.display  = 'block';
+    hint.textContent     = '';
+  }
 }
-}
-
-  
-
 
 function filterCat3D(cat, el) {
   currentCat3D = cat;
@@ -1019,7 +974,6 @@ function showToast(msg) {
 
 fetchMenuFromSheet();
 document.addEventListener('contextmenu', e => e.preventDefault());
-
 </script>
 </body>
 </html>
